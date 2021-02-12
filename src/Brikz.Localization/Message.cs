@@ -22,13 +22,12 @@ namespace Brikz.Localization
 
         public string ToString(string locale, IResourceStore store)
         {
-            if (!Template.HasCode || string.IsNullOrWhiteSpace(locale) || store == null) return ToString();
+            if (string.IsNullOrWhiteSpace(locale) || store == null) return ToString();
 
-            var localizedMessage = store.GetLocalizedString(Template.Code, locale);
-            if (string.IsNullOrWhiteSpace(localizedMessage)) return ToString();
+            var localizedMessage = Template.HasCode ? store.GetLocalizedString(Template.Code, locale) : Template.Text;
+            if (string.IsNullOrWhiteSpace(localizedMessage)) localizedMessage = Template.Text;
 
-            var localizedArguments = Args.Select(arg => arg.ToString(locale, store))
-                .ToArray();
+            var localizedArguments = Args.Select(arg => arg.ToString(locale, store)).ToArray();
 
             return string.Format(localizedMessage, localizedArguments);
         }

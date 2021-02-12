@@ -104,5 +104,21 @@ namespace Brikz.Localization.Test
             Assert.Equal(string.Format(ArgMessageTemplateEn, datetimeArg.ToString("dd.MM.yyyy", new CultureInfo(En))),
                 messageTemplate.ToMessage(datetimeArg.ToMessageArgument("dd.MM.yyyy")).ToString(En, resourceStore));
         }
+
+        [Fact]
+        public void MessageTemplateWithoutCodeArgumentsLocalizationTest()
+        {
+            var resourceStore = new ResourceStore();
+            var messageTemplate = ArgMessageTemplateRu.ToMessageTemplate();
+
+            decimal decimalArg = 1;
+            DateTime datetimeArg = DateTime.Today;
+
+            Assert.Equal(string.Format(ArgMessageTemplateRu, decimalArg.ToString(new CultureInfo(En))),
+                messageTemplate.ToMessage(decimalArg).ToString(En, resourceStore));
+
+            Assert.Equal(string.Format(ArgMessageTemplateRu, datetimeArg.ToString(new CultureInfo(En))),
+                messageTemplate.ToMessage(datetimeArg).ToString(En, resourceStore));
+        }
     }
 }

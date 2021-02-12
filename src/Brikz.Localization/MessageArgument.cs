@@ -76,8 +76,9 @@ namespace Brikz.Localization
         }
 
         public override string ToString(string locale, IResourceStore store)
-        {
-            return Localize((T)Value, new CultureInfo(locale));
+        {            
+            return string.IsNullOrWhiteSpace(locale) ?
+                Value.ToString() : Localize((T)Value, new CultureInfo(locale));
         }
 
         protected abstract string Localize(T value, IFormatProvider provider);
@@ -100,7 +101,7 @@ namespace Brikz.Localization
 
         public override string ToString(string locale, IResourceStore store)
         {
-            if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(locale)) return (string)Value;
+            if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(locale) || store == null) return (string)Value;
 
             var localized = store.GetLocalizedString(Code, locale);
             if(string.IsNullOrEmpty(localized)) return (string)Value;
