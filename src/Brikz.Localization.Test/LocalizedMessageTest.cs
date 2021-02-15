@@ -120,5 +120,20 @@ namespace Brikz.Localization.Test
             Assert.Equal(string.Format(ArgMessageTemplateRu, datetimeArg.ToString(new CultureInfo(En))),
                 messageTemplate.ToMessage(datetimeArg).ToString(En, resourceStore));
         }
+
+        [Fact]
+        public void LocalizedMessageExceptionTest()
+        {
+            var resourceStore = new ResourceStore();
+            var innerException = new Exception("inner");
+            var simpleExceptionRu = new Exception(MessageTemplateRu);
+            var simpleExceptionEn = new Exception(MessageTemplateEn);
+
+            var localizedException = new LocalizableMessageException(MessageTemplateRu.ToMessageWithCode(MessageTemplateCode));
+
+            Assert.Equal(simpleExceptionEn.ToString().Replace("System.Exception", "Brikz.Localization.LocalizableMessageException"), 
+                localizedException.ToString(En, resourceStore));
+            Assert.Equal(simpleExceptionRu.ToString().Replace("System.Exception", "Brikz.Localization.LocalizableMessageException"), localizedException.ToString());
+        }       
     }
 }

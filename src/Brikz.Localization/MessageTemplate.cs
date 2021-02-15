@@ -19,7 +19,7 @@ namespace Brikz.Localization
 
         public MessageTemplate(string code, string text)
         {
-            if (code == null && text == null) throw new ArgumentNullException("Nor message code neither message text is specified.");
+            if (code == null && text == null) throw new ArgumentNullException(nameof(text));
 
             Code = code;
             Text = text;
