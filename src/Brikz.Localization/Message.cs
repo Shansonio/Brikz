@@ -17,24 +17,22 @@ namespace Brikz.Localization
 
         public override string ToString()
         {
-            return Template.HasText ? string.Format(Template.Text, Args) : Template.Code;
+            return string.Format(Template.ToString(), Args.Select(a => a.ToString()).ToArray());
         }
 
-        public string ToString(string locale, IResourceStore store)
+        public string ToString(string locale)
         {
-            if (string.IsNullOrWhiteSpace(locale) || store == null) return ToString();
+            return string.Format(Template.ToString(locale), Args.Select(a => a.ToString(locale)).ToArray());
+        }
 
-            var localizedMessage = Template.HasCode ? store.GetLocalizedString(Template.Code, locale) : Template.Text;
-            if (string.IsNullOrWhiteSpace(localizedMessage)) localizedMessage = Template.Text;
-
-            var localizedArguments = Args.Select(arg => arg.ToString(locale, store)).ToArray();
-
-            return string.Format(localizedMessage, localizedArguments);
+        public string ToString(string locale, ILocalizationResourceStore store)
+        {
+            return string.Format(Template.ToString(locale, store), Args.Select(a => a.ToString(locale, store)).ToArray());
         }
 
         public static implicit operator Message(string message)
         {
-            return new Message(message);
+            return message?.ToMessage();
         }
 
         public static implicit operator Message(MessageTemplate template)

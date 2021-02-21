@@ -1,6 +1,6 @@
 ﻿namespace Brikz.Localization
 {
-    public interface IResourceStore
+    public interface ILocalizationResourceStore
     {
         string GetLocalizedString(string code, string locale);
     }

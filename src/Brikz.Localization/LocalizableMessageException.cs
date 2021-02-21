@@ -21,8 +21,8 @@ namespace Brikz.Localization
             LocalizableMessage = message;
         }
 
-        public LocalizableMessageException(string message, params MessageArgument[] args)
-            : this(message?.ToMessage(args))
+        public LocalizableMessageException(MessageTemplate template, params MessageArgument[] args)
+            : this(template?.ToMessage(args))
         {
         }
 
@@ -32,8 +32,8 @@ namespace Brikz.Localization
             LocalizableMessage = message;
         }
 
-        public LocalizableMessageException(Exception inner, string message, params MessageArgument[] args)
-            : this(inner, message?.ToMessage(args))
+        public LocalizableMessageException(Exception inner, MessageTemplate template, params MessageArgument[] args)
+            : this(inner, template?.ToMessage(args))
         {
         }
 
@@ -43,11 +43,24 @@ namespace Brikz.Localization
         {
         }
 
-        public string ToString(string locale, IResourceStore store)
-        {            
-            if (string.IsNullOrWhiteSpace(locale) || store == null) return ToString();
+        public string ToString(string locale)
+        {
+            if (string.IsNullOrWhiteSpace(locale)) return ToString();
 
-            var message = $"{GetType().FullName}: {LocalizableMessage.ToString(locale, store)}";
+            return GetFullString(LocalizableMessage.ToString(locale));
+        }
+
+        public string ToString(string locale, ILocalizationResourceStore store)
+        {            
+            if (string.IsNullOrWhiteSpace(locale)) return ToString();
+            if (store == null) return ToString(locale);
+
+            return GetFullString(LocalizableMessage.ToString(locale, store));
+        }
+
+        private string GetFullString(string localizedString)
+        {
+            var message = $"{GetType().FullName}: {localizedString}";
 
             if (InnerException != null)
                 message += $"\r\n ---> {InnerException}\r\n   --- End of inner exception stack trace ---";

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Brikz.Localization.MessageArguments;
+using System;
 
 namespace Brikz.Localization
 {
@@ -67,11 +68,6 @@ namespace Brikz.Localization
         public static MessageArgument ToMessageArgument(this Guid arg, string customFormat)
         {
             return new GuidMessageArgument(arg, customFormat);
-        }
-
-        public static MessageArgument ToMessageArgument(this Enum arg, string customFormat)
-        {
-            return new EnumMessageArgument(arg, customFormat);
         }
     }
 }
