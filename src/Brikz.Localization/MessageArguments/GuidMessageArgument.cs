@@ -2,7 +2,7 @@
 
 namespace Brikz.Localization.MessageArguments
 {
-    public class GuidMessageArgument : NonTranslatableMessageArgument<Guid>
+    public class GuidMessageArgument : ValueTypeMessageArgument<Guid>
     {
         public GuidMessageArgument(Guid value, string customFormat = null)
            : base(value, customFormat)
@@ -16,9 +16,16 @@ namespace Brikz.Localization.MessageArguments
                 value.ToString();
         }
 
+        protected override string Localize(Guid value)
+        {
+            return !string.IsNullOrWhiteSpace(CustomFormat) ?
+                value.ToString(CustomFormat) :
+                value.ToString();
+        }
+
         public static implicit operator GuidMessageArgument(Guid arg)
         {
-            return new GuidMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
     }
 }

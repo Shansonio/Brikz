@@ -2,7 +2,7 @@
 
 namespace Brikz.Localization.MessageArguments
 {
-    public class IntegerMessageArgument : NonTranslatableMessageArgument<int>
+    public class IntegerMessageArgument : ValueTypeMessageArgument<int>
     {
         public IntegerMessageArgument(int value, string customFormat = null)
            : base(value, customFormat)
@@ -16,9 +16,16 @@ namespace Brikz.Localization.MessageArguments
                 value.ToString(provider);
         }
 
+        protected override string Localize(int value)
+        {
+            return !string.IsNullOrWhiteSpace(CustomFormat) ?
+                value.ToString(CustomFormat) :
+                value.ToString();
+        }
+
         public static implicit operator IntegerMessageArgument(int arg)
         {
-            return new IntegerMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
     }
 }

@@ -21,8 +21,8 @@ namespace Brikz.Localization
             LocalizableMessage = message;
         }
 
-        public LocalizableMessageException(MessageTemplate template, params MessageArgument[] args)
-            : this(template?.ToMessage(args))
+        public LocalizableMessageException(LocalizableString message, params MessageArgument[] args)
+            : this(message?.ToMessage(args))
         {
         }
 
@@ -32,8 +32,8 @@ namespace Brikz.Localization
             LocalizableMessage = message;
         }
 
-        public LocalizableMessageException(Exception inner, MessageTemplate template, params MessageArgument[] args)
-            : this(inner, template?.ToMessage(args))
+        public LocalizableMessageException(Exception inner, LocalizableString message, params MessageArgument[] args)
+            : this(inner, message?.ToMessage(args))
         {
         }
 

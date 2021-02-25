@@ -2,7 +2,7 @@
 
 namespace Brikz.Localization.MessageArguments
 {
-    public class DateTimeMessageArgument : NonTranslatableMessageArgument<DateTime>
+    public class DateTimeMessageArgument : ValueTypeMessageArgument<DateTime>
     {
         public DateTimeMessageArgument(DateTime value, string customFormat = null)
             : base(value, customFormat)
@@ -16,9 +16,16 @@ namespace Brikz.Localization.MessageArguments
                 value.ToString(provider);
         }
 
+        protected override string Localize(DateTime value)
+        {
+            return !string.IsNullOrWhiteSpace(CustomFormat) ?
+                value.ToString(CustomFormat) :
+                value.ToString();
+        }
+
         public static implicit operator DateTimeMessageArgument(DateTime arg)
         {
-            return new DateTimeMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
     }
 }

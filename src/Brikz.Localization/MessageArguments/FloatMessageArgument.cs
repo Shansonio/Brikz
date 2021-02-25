@@ -2,7 +2,7 @@
 
 namespace Brikz.Localization.MessageArguments
 {
-    public class FloatMessageArgument : NonTranslatableMessageArgument<float>
+    public class FloatMessageArgument : ValueTypeMessageArgument<float>
     {
         public FloatMessageArgument(float value, string customFormat = null)
            : base(value, customFormat)
@@ -16,9 +16,16 @@ namespace Brikz.Localization.MessageArguments
                 value.ToString(provider);
         }
 
+        protected override string Localize(float value)
+        {
+            return !string.IsNullOrWhiteSpace(CustomFormat) ?
+                value.ToString(CustomFormat) :
+                value.ToString();
+        }
+
         public static implicit operator FloatMessageArgument(float arg)
         {
-            return new FloatMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
     }
 }

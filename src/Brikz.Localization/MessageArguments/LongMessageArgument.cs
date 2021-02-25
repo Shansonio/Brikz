@@ -2,7 +2,7 @@
 
 namespace Brikz.Localization.MessageArguments
 {
-    public class LongMessageArgument : NonTranslatableMessageArgument<long>
+    public class LongMessageArgument : ValueTypeMessageArgument<long>
     {
         public LongMessageArgument(long value, string customFormat = null)
            : base(value, customFormat)
@@ -16,9 +16,16 @@ namespace Brikz.Localization.MessageArguments
                 value.ToString(provider);
         }
 
+        protected override string Localize(long value)
+        {
+            return !string.IsNullOrWhiteSpace(CustomFormat) ?
+                value.ToString(CustomFormat) :
+                value.ToString();
+        }
+
         public static implicit operator LongMessageArgument(long arg)
         {
-            return new LongMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Brikz.Localization.MessageArguments
 {
-    public class DecimalMessageArgument : NonTranslatableMessageArgument<decimal>
+    public class DecimalMessageArgument : ValueTypeMessageArgument<decimal>
     {
         public DecimalMessageArgument(decimal value, string customFormat = null)
            : base(value, customFormat)
@@ -16,9 +16,16 @@ namespace Brikz.Localization.MessageArguments
                 value.ToString(provider);
         }
 
+        protected override string Localize(decimal value)
+        {
+            return !string.IsNullOrWhiteSpace(CustomFormat) ?
+                value.ToString(CustomFormat) :
+                value.ToString();
+        }
+
         public static implicit operator DecimalMessageArgument(decimal arg)
         {
-            return new DecimalMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
     }
 }

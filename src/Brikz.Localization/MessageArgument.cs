@@ -12,11 +12,6 @@ namespace Brikz.Localization
             Value = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
-
         public abstract string ToString(string locale);
 
         public abstract string ToString(string locale, ILocalizationResourceStore store);
@@ -24,42 +19,42 @@ namespace Brikz.Localization
 
         public static implicit operator MessageArgument(string arg)
         {
-            return new StringMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
 
         public static implicit operator MessageArgument(DateTime arg)
         {
-            return new DateTimeMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
 
         public static implicit operator MessageArgument(decimal arg)
         {
-            return new DecimalMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
 
         public static implicit operator MessageArgument(double arg)
         {
-            return new DoubleMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
 
         public static implicit operator MessageArgument(float arg)
         {
-            return new FloatMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
 
         public static implicit operator MessageArgument(int arg)
         {
-            return new IntegerMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
 
         public static implicit operator MessageArgument(long arg)
         {
-            return new LongMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
 
         public static implicit operator MessageArgument(Guid arg)
         {
-            return new GuidMessageArgument(arg);
+            return arg.ToMessageArgument();
         }
     }
 }

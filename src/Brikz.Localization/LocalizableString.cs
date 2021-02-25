@@ -3,30 +3,34 @@ using System.Collections.Generic;
 
 namespace Brikz.Localization
 {
-    public class MessageTemplate
+    public class LocalizableString
     {
         public string Code { get; private set; }
-
+        
         public bool HasCode => !string.IsNullOrWhiteSpace(Code);
 
         public string DefaultText { get; private set; }
 
+
         private readonly Dictionary<string, string> _translations = new Dictionary<string, string>();
 
-        public MessageTemplate(string defaultText)            
+        public LocalizableString(string defaultText)
         {
             if (string.IsNullOrWhiteSpace(defaultText)) throw new ArgumentNullException(nameof(defaultText));
 
             DefaultText = defaultText;
         }
 
-        public MessageTemplate(string code, string defaultText)
-            : this(defaultText)
+        public LocalizableString SetCode(string code)
         {
+            if (string.IsNullOrWhiteSpace(code)) throw new ArgumentNullException(nameof(code));
+            
             Code = code;
+            
+            return this;
         }
 
-        public MessageTemplate AddTranslation(string locale, string text)
+        public LocalizableString SetTranslation(string locale, string text)
         {
             if (string.IsNullOrWhiteSpace(locale)) throw new ArgumentNullException(nameof(locale));
             if (string.IsNullOrWhiteSpace(text)) throw new ArgumentNullException(nameof(text));
@@ -60,9 +64,9 @@ namespace Brikz.Localization
             return localizedText;
         }
 
-        public static implicit operator MessageTemplate(string message)
+        public static implicit operator LocalizableString(string text)
         {
-            return new MessageTemplate(message);
+            return text.ToLocalizableString();
         }
     }
 }
